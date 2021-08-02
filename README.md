@@ -12,11 +12,7 @@
 
         git clone git@github.com:github-devops/play-with-docker.git
 
-2.  Переходим в директорию с нужным сервисом, например jenkins
-    
-        cd jenkins
-
-3.  Запускаем скрипт:
+2.  Запускаем скрипт:
 
         ./run <SERVICE> <URL_FOR_SSH>
 
