@@ -23,4 +23,6 @@ cd ${HOME}
 
 prepare_profile
 
-docker-compose up -d
+if ! docker-compose up -d;then
+	docker run --name jenkins -p 8080:8080 -p 50000:50000 -d jenkins/jenkins
+fi
