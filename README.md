@@ -18,7 +18,8 @@
 
 3.  Запускаем скрипт:
 
-        ./run <IP_FOR_SSH>
+        ./run <SERVICE> <URL_FOR_SSH>
 
-    IP_FOR_SSH выглядит так: ip172-18-0-70-c4437qfnjsv0008hvac0@direct.labs.play-with-docker.com,
+    <SERVICE> - название сервиса, который хотим запустить (из списка директорий), т.е. название директории соответсвует названию сервиса
+    <URL_FOR_SSH> выглядит так: ip172-18-0-70-c4437qfnjsv0008hvac0@direct.labs.play-with-docker.com,
     его необходимо скопировать из веб-панели, после запуска инстанса
