@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PORT_1=8080
-PORT_2=50000
+PORT_1=8080 	# port for web
+PORT_2=50000 	# port for service
 
 version=${RANDOM}
 TMP_PASSWORD='/var/jenkins_home/secrets/initialAdminPassword'
