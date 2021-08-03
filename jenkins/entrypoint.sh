@@ -17,17 +17,28 @@ function increment_port(){
 	echo ${port}
 }
 
+function is_answer_yes(){
+    local message="${1}"
+    echo -n "${message}"
+    read answer
+    [[ "${answer}" =~ ^[Yy]$ ]] && return 0 || return 1
+}
+
 function kill_running_jenkins(){
 	jenkins_containers=$(docker ps --format "table {{.Names}}"|grep jenkins)
+	if [[ ${jenkins_containers} ]];then
+		echo 'WARNING: Jenkins container already running'
+		if ! is_answer_yes "DIALOG: Do you want to recreate a Jenkins container? [y/N] ";then
+        	echo "Good bye!" && exit 0
+	    fi
+	fi
 	for i in ${jenkins_containers};do
 		docker kill ${i}
 	done
 	docker system prune -f
 }
 
-if ! kill_running_jenkins;then
-	echo 'not running jenkins'
-fi
+kill_running_jenkins
 
 docker 	run --name jenkins_${version} \
 		-p $(increment_port ${PORT_1}):${PORT_1} \
@@ -39,16 +50,16 @@ sleep 2
 docker ps --format "table {{.Names}}\t{{.Networks}}\t{{.Status}}\t{{.Ports}}"
 
 echo
-echo "Use url below for access to Jenkins:"
+echo "INFO: Use url below for access to Jenkins:"
 echo "http://$(wget -q -O- ifconfig.me):${PORT_1}"
 echo
 
-echo "Waiting for password..."
+echo "INFO: Waiting for password..."
 while ! docker exec jenkins_${version} ls ${TMP_PASSWORD} &> /dev/null;do
 	sleep 2
 done
 
 echo
-echo "Copy/paste password below:"
+echo "INFO: Copy/paste password below:"
 docker exec jenkins_${version} cat ${TMP_PASSWORD}
 echo
