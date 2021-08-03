@@ -1,28 +1,22 @@
 #!/bin/bash
 
-function prepare_profile(){
-	cat <<EOF > ${HOME}/.profile
-WHITE='\[\033[0m\]'
-GREEN='\[\033[1;32m\]'
-PURPURE='\[\033[1;35m\]'
-YELLOW='\[\033[1;33m\]'
-RED='\[\033[0;31m\]'
-BLUE='\[\033[1;34m\]'
-CYAN='\[\033[0;36m\]'
-PS1="\${CYAN}[\u]\${BLUE}@\${CYAN}[\h]\${BLUE}[\W]\${WHITE}\${CYAN}\\$\${WHITE} "
-alias ll='ls -la'
-
-EOF
-}
-
-####################  __MAIN__  ####################
-
 set -e
 
-cd ${HOME}
+PORT_1=8080
+PORT_2=50000
 
-prepare_profile
+VERSION=${RANDOM}
 
-if ! docker-compose up -d;then
-	docker run --name jenkins -p 8080:8080 -p 50000:50000 -d jenkins/jenkins
-fi
+function increment_port(){
+	port=${1}
+	[[ ! ${port} ]] && exit 1
+	while ss -lnp|grep :${port} &> /dev/null;do
+		port=$(( port+1 ))
+	done
+	echo ${port}
+}
+
+docker 	run --name jenkins_${VERSION} \
+		-p $(increment_port ${PORT_1}):${PORT_1} \
+		-p $(increment_port ${PORT_2}):${PORT_2} \
+		-d jenkins/jenkins
