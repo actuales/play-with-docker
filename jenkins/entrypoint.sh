@@ -32,8 +32,8 @@ function kill_running_container(){
         	echo "Good bye!" && exit 0
 	    fi
 	fi
-	for i in ${containers};do
-		docker kill ${i}
+	for container in ${containers};do
+		docker kill ${container}
 	done
 	docker system prune -f
 }
