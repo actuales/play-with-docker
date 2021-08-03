@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 PORT_1=8080
 PORT_2=50000
 
