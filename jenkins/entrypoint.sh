@@ -24,21 +24,23 @@ function is_answer_yes(){
     [[ "${answer}" =~ ^[Yy]$ ]] && return 0 || return 1
 }
 
-function kill_running_jenkins(){
-	jenkins_containers=$(docker ps --format "table {{.Names}}"|grep jenkins)
-	if [[ ${jenkins_containers} ]];then
+function kill_running_container(){
+	container_name=${1}
+	[[ ! ${container_name} ]] && exit 1
+	containers=$(docker ps --format "table {{.Names}}"|grep ${container_name})
+	if [[ ${containers} ]];then
 		echo 'WARNING: Jenkins container already running'
 		if ! is_answer_yes "DIALOG: Do you want to recreate a Jenkins container? [y/N] ";then
         	echo "Good bye!" && exit 0
 	    fi
 	fi
-	for i in ${jenkins_containers};do
+	for i in ${containers};do
 		docker kill ${i}
 	done
 	docker system prune -f
 }
 
-kill_running_jenkins
+kill_running_container jenkins
 
 docker 	run --name jenkins_${version} \
 		-p $(increment_port ${PORT_1}):${PORT_1} \
