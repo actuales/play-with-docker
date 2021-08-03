@@ -7,7 +7,7 @@ version=${RANDOM}
 TMP_PASSWORD='/var/jenkins_home/secrets/initialAdminPassword'
 
 function increment_port(){
-	port=${1}
+	local port=${1}
 	[[ ! ${port} ]] && exit 1
 	while ss -lnp|grep :${port} &> /dev/null;do
 		port=$(( port+1 ))
@@ -23,9 +23,9 @@ function is_answer_yes(){
 }
 
 function kill_running_container(){
-	container_name=${1}
+	local container_name=${1}
 	[[ ! ${container_name} ]] && exit 1
-	containers=$(docker ps --format "table {{.Names}}"|grep ${container_name})
+	local containers=$(docker ps --format "table {{.Names}}"|grep ${container_name})
 	if [[ ${containers} ]];then
 		echo 'WARNING: Jenkins container already running'
 		if ! is_answer_yes "DIALOG: Do you want to recreate a Jenkins container? [y/N] ";then
