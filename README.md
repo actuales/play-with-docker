@@ -14,7 +14,7 @@
 
 2.  Запускаем скрипт:
 
-        ./run <SERVICE> <URL_FOR_SSH>
+        ./deploy.sh <SERVICE> <URL_FOR_SSH>
 
     SERVICE - название сервиса, который хотим запустить, т.е. название директории соответсвует названию сервиса
     URL_FOR_SSH выглядит так: ip172-18-0-70-c4437qfnjsv0008hvac0@direct.labs.play-with-docker.com,
