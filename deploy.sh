@@ -15,4 +15,6 @@ fi
 scp ${service_name}/* ${host_name}:
 
 ### Execute bash script on a remote server:
+ssh ${host_name} "apk update"
+ssh ${host_name} "apk add git"
 ssh ${host_name} "./${ENTRYPOINT_FILE}"
